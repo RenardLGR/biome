@@ -5,7 +5,15 @@ export default class Biome {
     constructor(context){
         this.context = context
         this.grid = Array.from({length : ROWS}, _ => Array(COLS))
-        this.grid[5][5] = new Grass(context)
+        this.initialize()
+    }
+
+    initialize(){
+        for(let col = 0 ; col<COLS ; col++){
+            for(let row=0 ; row<ROWS ; row++){
+                this.grid[row][col] = new Grass(this.context, this.grid, col, row)
+            }
+        }
     }
 
     //From the existing environment, this function generates the next generation
@@ -16,7 +24,7 @@ export default class Biome {
     draw(){
         for(let row=0 ; row<ROWS ; row++){
             for(let col=0 ; col<COLS ; col++){
-                if(this.grid[row][col] !== undefined) this.grid[row][col].draw()
+                this.grid[row][col].draw()
             }
         }
     }
