@@ -1,5 +1,6 @@
 import Biome from './Biome.js'
 import { COLS, ROWS, CELL_SIZE, period } from './constants.js';
+console.log("hello")
 
 const pauseBtn = document.querySelector('.pause-btn')
 pauseBtn.addEventListener('click', () => {
@@ -43,7 +44,7 @@ function animate(now = 0) {
     time.elapsed = now - time.start
     if(time.elapsed > period && !isPaused){
         time.start = now
-        biome.regenerate() //TODO
+        biome.next() //TODO
         context.clearRect(0, 0, context.canvas.width, context.canvas.height)
         biome.draw()
     }

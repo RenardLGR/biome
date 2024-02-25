@@ -6,8 +6,7 @@ export default class Grass extends Terrain{
         super(context, grid, x, y)
         this.id = "grass"
         this.color = "#e9f0c7"
-        this.color2 = "red"
-        this.twitch = false
     }
 
+    
 }
