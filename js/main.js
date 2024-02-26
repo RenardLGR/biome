@@ -1,6 +1,5 @@
 import Biome from './Biome.js'
 import { COLS, ROWS, CELL_SIZE, period } from './constants.js';
-console.log("hello")
 
 const pauseBtn = document.querySelector('.pause-btn')
 pauseBtn.addEventListener('click', () => {
@@ -17,13 +16,15 @@ context.canvas.height = ROWS * CELL_SIZE
 // context.scale(CELL_SIZE, CELL_SIZE) //the scale of 1 will now be scaled to a block size
 
 let biome = new Biome(context)
-let isPaused = false
+biome.draw()
+let isPaused = true
 let requestId
 let time
 play()
 
-//TODO
+// DONE
 //life cycle as follow : grass, small tree, medium tree, grown tree (different shades and shapes if possible), fire, charcoal, ash, grass, repeat
+// TODO
 //large area of water, surrounded by sand using chebychev distance
 
 //seasons cycle

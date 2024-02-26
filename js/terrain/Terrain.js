@@ -24,4 +24,68 @@ export default class Terrain{
         this.context.fillStyle = this.color
         this.context.fillRect(this.x * CELL_SIZE, this.y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
     }
+
+    // (number, number) : Array <Array<number> >
+    getMooreNeighboorhood(row, col){
+        const neighborhood = [];
+    
+        const neighborsRelativeCoords = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [0, -1],           [0, 1],
+            [1, -1], [1, 0], [1, 1]
+        ];
+    
+        for (const [dr, dc] of neighborsRelativeCoords) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+    
+            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+                neighborhood.push([newRow, newCol]);
+            }
+        }
+    
+        return neighborhood;
+    }
+
+    // (number, number) : Array <Array<number> >
+    getVonNeumannNeighborhood(row, col) {
+        const neighborhood = [];
+    
+        const neighborsRelativeCoords = [
+                        [-1, 0],
+            [0, -1],           [0, 1],
+                        [1, 0]
+        ];
+    
+        for (const [dr, dc] of neighborsRelativeCoords) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+    
+            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+                neighborhood.push([newRow, newCol]);
+            }
+        }
+    
+        return neighborhood;
+    }
+
+    // (number, number, number) : Array <Array<number> >
+    getChebyshevNeighborhood(row, col, distance) {
+        const neighborhood = [];
+    
+        // Iterate through all cells within the specified Chebyshev distance
+        for (let i = row - distance; i <= row + distance; i++) {
+            for (let j = col - distance; j <= col + distance; j++) {
+                // Calculate Chebyshev distance
+                const chebyshevDist = Math.max(Math.abs(row - i), Math.abs(col - j));
+    
+                // Check if the cell is within the Chebyshev distance and within the bounds of the grid
+                if (chebyshevDist <= distance && i >= 0 && i < ROWS && j >= 0 && j < COLS) {
+                    neighborhood.push([i, j]);
+                }
+            }
+        }
+    
+        return neighborhood;
+    }
 }
