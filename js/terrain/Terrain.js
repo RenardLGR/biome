@@ -10,8 +10,8 @@ export default class Terrain{
     }
 
     next(){
+        //Default behavior of the parent class, modify children class if needed
         this.nthGen++
-        // TODO update the status according to its neighbors
         return this
     }
 
@@ -26,7 +26,7 @@ export default class Terrain{
     }
 
     // (number, number) : Array <Array<number> >
-    getMooreNeighboorhood(row, col){
+    getMooreNeighborhood(row, col){
         const neighborhood = [];
     
         const neighborsRelativeCoords = [
@@ -81,6 +81,26 @@ export default class Terrain{
     
                 // Check if the cell is within the Chebyshev distance and within the bounds of the grid
                 if (chebyshevDist <= distance && i >= 0 && i < ROWS && j >= 0 && j < COLS) {
+                    neighborhood.push([i, j]);
+                }
+            }
+        }
+    
+        return neighborhood;
+    }
+
+    // (number, number, number) : Array <Array<number> >
+    getTaxicabNeighborhood(row, col, distance) {
+        const neighborhood = [];
+    
+        // Iterate through all cells within the specified taxicab distance
+        for (let i = row - distance; i <= row + distance; i++) {
+            for (let j = col - distance; j <= col + distance; j++) {
+                // Calculate Manhattan distance
+                const manhattanDist = Math.abs(row - i) + Math.abs(col - j);
+    
+                // Check if the cell is within the Manhattan distance and within the bounds of the grid
+                if (manhattanDist <= distance && i >= 0 && i < ROWS && j >= 0 && j < COLS) {
                     neighborhood.push([i, j]);
                 }
             }

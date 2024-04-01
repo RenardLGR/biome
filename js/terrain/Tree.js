@@ -16,7 +16,7 @@ export default class Tree extends Terrain{
 
     next(){
         this.nthGen++
-        const mooreNbrs = this.getMooreNeighboorhood(this.y, this.x)
+        const mooreNbrs = this.getMooreNeighborhood(this.y, this.x)
 
         //A tree has a random chance to ignite, this chance increases if there is fire in its nbrs
         let chanceToIgnite = 2

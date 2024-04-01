@@ -11,7 +11,7 @@ export default class Grass extends Terrain{
 
     next(){
         this.nthGen++
-        const mooreNbrs = this.getMooreNeighboorhood(this.y, this.x)
+        const mooreNbrs = this.getMooreNeighborhood(this.y, this.x)
 
         //A grass has a random chance to become a tree, this chance increases if there are trees in its nbrs
         let chanceToTree = 2
