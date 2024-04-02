@@ -11,7 +11,7 @@ export default class Biome {
         this.grid = Array.from({length : ROWS}, _ => Array(COLS))
         this.nextGrid = Array.from({length : ROWS}, _ => Array(COLS))
         // this.initialize()
-        this.generateMountain(20, 20)
+        this.generateRiver()
     }
 
     initialize(){
@@ -127,7 +127,7 @@ export default class Biome {
                 this.context.lineWidth = 1; // Adjust the border width as needed
                 this.context.strokeRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 
-                // Draw black or white cell
+                // Draw default cell green, icy tops white and mountain dark grey
                 this.context.fillStyle = this.grid[row][col] === 0 ? 'green' : (this.grid[row][col] === 1 ? '#3b3b3b' : "white")
                 this.context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             }
@@ -135,6 +135,46 @@ export default class Biome {
     }
 
     //Playground : generate river
+    generateRiver(){
+        //clean sweep
+        for(let row=0 ; row<ROWS ; row++){
+            for(let col=0 ; col<COLS ; col++){
+                this.grid[row][col] = 0
+            }
+        }
+
+        //Top to bottom
+        let startX = Math.floor(COLS / 2)
+        let startY = 0
+
+        let riverCells = [[startX, startY]]
+        for(let i=1 ; i<ROWS ; i++){
+            //How much the river "wiggles"
+            let shift = this.randomNumberBetween(-2, 2)
+            let newX = riverCells[riverCells.length-1][0] + shift
+            riverCells.push([newX, startY + i])
+        }
+
+        //Get width of the river
+        let riverNeighbors = riverCells.map(([col, row]) => this.getChebyshevNeighborhood(row, col, 2))
+
+        riverNeighbors.forEach(subarr => {
+            subarr.forEach(([row, col]) => this.grid[row][col] = 1)
+        })
+
+        for(let row=0 ; row<ROWS ; row++){
+            for(let col=0 ; col<COLS ; col++){
+                // Draw grey border
+                this.context.strokeStyle = 'grey';
+                this.context.lineWidth = 1; // Adjust the border width as needed
+                this.context.strokeRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+                // Draw default green or blue cells
+                this.context.fillStyle = this.grid[row][col] === 0 ? 'green' : "blue"
+                this.context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            }
+        }
+    }
 
     // (number, number) : number
     randomNumberBetween(min, max){

@@ -45,7 +45,7 @@ function animate(now = 0) {
     time.elapsed = now - time.start
     if(time.elapsed > period && !isPaused){
         time.start = now
-        biome.next() //TODO
+        biome.next()
         context.clearRect(0, 0, context.canvas.width, context.canvas.height)
         biome.draw()
     }
