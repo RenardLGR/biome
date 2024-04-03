@@ -11,7 +11,7 @@ export default class Biome {
         this.grid = Array.from({length : ROWS}, _ => Array(COLS))
         this.nextGrid = Array.from({length : ROWS}, _ => Array(COLS))
         // this.initialize()
-        this.generateRiver()
+        this.generateVolcanicIsland(10, 18)
     }
 
     initialize(){
@@ -171,6 +171,83 @@ export default class Biome {
 
                 // Draw default green or blue cells
                 this.context.fillStyle = this.grid[row][col] === 0 ? 'green' : "blue"
+                this.context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            }
+        }
+    }
+
+    //Playground : generate volcanic island
+    generateVolcanicIsland(row, col){
+        //clean sweep
+        for(let row=0 ; row<ROWS ; row++){
+            for(let col=0 ; col<COLS ; col++){
+                this.grid[row][col] = 0
+            }
+        }
+
+        let volcanoCoords = []
+        let lavaCoords = []
+        //generate 10 sources closed to the original source
+        for(let i=0 ; i<10 ; i++){
+            let radius = this.randomNumberBetween(6, 12)
+            let shiftedRow = row + this.randomNumberBetween(-5, 5)
+            let shiftedCol = col + this.randomNumberBetween(-5, 5)
+            volcanoCoords = volcanoCoords.concat(this.getCircularNeighborhood(shiftedRow, shiftedCol, radius))
+            lavaCoords = lavaCoords.concat(this.getCircularNeighborhood(shiftedRow, shiftedCol, this.randomNumberBetween(1, 5)))
+
+            //Generate lava flow
+            let length = this.randomNumberBetween(8, 15)
+            let direction = this.randomNumberBetween(0, 3)
+            let prevRow = shiftedRow
+            let prevCol = shiftedCol
+            for(let i=0 ; i<length ; i++){
+                //!! We actually need to check if the += this.randomNumberBetween(-1,1) leads to an inbound value
+                switch(direction){
+                    case 0 :  // North
+                        if(prevRow > 0){
+                            lavaCoords.push([--prevRow, prevCol += this.randomNumberBetween(-1,1)])
+                        }
+                        break;
+                    
+                    case 1 :  // East
+                        if(prevCol < COLS-1){
+                            lavaCoords.push([prevRow += this.randomNumberBetween(-1,1), ++prevCol])
+                        }
+                        break;
+
+                    case 2 :  // South
+                        if(prevRow < ROWS-1){
+                            lavaCoords.push([++prevRow, prevCol += this.randomNumberBetween(-1,1)])
+                        }
+                        break;
+
+                    case 3 :  // West
+                        if(prevCol > 0){
+                            lavaCoords.push([prevRow += this.randomNumberBetween(-1,1), --prevCol])
+                        }
+                        break;
+                }
+            }
+        }
+        
+        //0 is default : water, volcano is 1 (mountain/brown color), 2 is lava (red color)
+        volcanoCoords.forEach(([row, col]) => {
+            this.grid[row][col] = 1
+        })
+
+        lavaCoords.forEach(([row, col]) => {
+            this.grid[row][col] = 2
+        })
+
+        for(let row=0 ; row<ROWS ; row++){
+            for(let col=0 ; col<COLS ; col++){
+                // Draw grey border
+                this.context.strokeStyle = 'grey';
+                this.context.lineWidth = 1; // Adjust the border width as needed
+                this.context.strokeRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+                // Draw default blue, brown, and red cells
+                this.context.fillStyle = this.grid[row][col] === 0 ? 'blue' : (this.grid[row][col] === 1 ? "#371e1f" : "red")
                 this.context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             }
         }
