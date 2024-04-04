@@ -195,37 +195,33 @@ export default class Biome {
             volcanoCoords = volcanoCoords.concat(this.getCircularNeighborhood(shiftedRow, shiftedCol, radius))
             lavaCoords = lavaCoords.concat(this.getCircularNeighborhood(shiftedRow, shiftedCol, this.randomNumberBetween(1, 5)))
 
-            //Generate lava flow
+            //Generate lava flow from the sources found above
             let length = this.randomNumberBetween(8, 15)
-            let direction = this.randomNumberBetween(0, 3)
-            let prevRow = shiftedRow
-            let prevCol = shiftedCol
+            let direction = this.randomNumberBetween(0, 3) // 0 North, 1 East, 2 South, 3 West
             for(let i=0 ; i<length ; i++){
-                //!! We actually need to check if the += this.randomNumberBetween(-1,1) leads to an inbound value
                 switch(direction){
                     case 0 :  // North
-                        if(prevRow > 0){
-                            lavaCoords.push([--prevRow, prevCol += this.randomNumberBetween(-1,1)])
-                        }
+                        shiftedRow--
+                        shiftedCol += this.randomNumberBetween(-1,1)
                         break;
                     
                     case 1 :  // East
-                        if(prevCol < COLS-1){
-                            lavaCoords.push([prevRow += this.randomNumberBetween(-1,1), ++prevCol])
-                        }
+                        shiftedRow += this.randomNumberBetween(-1,1)
+                        shiftedCol++
                         break;
 
                     case 2 :  // South
-                        if(prevRow < ROWS-1){
-                            lavaCoords.push([++prevRow, prevCol += this.randomNumberBetween(-1,1)])
-                        }
+                        shiftedRow++
+                        shiftedCol += this.randomNumberBetween(-1,1)
                         break;
 
                     case 3 :  // West
-                        if(prevCol > 0){
-                            lavaCoords.push([prevRow += this.randomNumberBetween(-1,1), --prevCol])
-                        }
+                        shiftedRow += this.randomNumberBetween(-1,1)
+                        shiftedCol--
                         break;
+                }
+                if(shiftedRow>=0 && shiftedRow<ROWS && shiftedCol>=0 && shiftedCol<COLS){
+                    lavaCoords.push([shiftedRow, shiftedCol])
                 }
             }
         }
