@@ -2,15 +2,15 @@ import { COLS, ROWS, CELL_SIZE, period } from '../constants.js';
 import Terrain from './Terrain.js'
 import Grass from './Grass.js'
 
-export default class Ashe extends Terrain{
+export default class Ashes extends Terrain{
     constructor(context, grid, x, y){
         super(context, grid, x, y)
-        this.id = "ashe"
+        this.id = "ashes"
         this.color = "#999999"
     }
 
     next(){
-        //After 5 generations, ashe becomes grass
+        //After 5 generations, ashes become grass
         this.nthGen++
 
         if(this.nthGen > 5){

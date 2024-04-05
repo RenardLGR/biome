@@ -25,6 +25,11 @@ export default class Terrain{
         this.context.fillRect(this.x * CELL_SIZE, this.y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
     }
 
+    // (number, number) : number
+    randomNumberBetween(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+
     // (number, number) : Array <Array<number> >
     getMooreNeighborhood(row, col){
         const neighborhood = [];

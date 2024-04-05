@@ -3,7 +3,7 @@ import Grass from './terrain/Grass.js'
 import Tree from './terrain/Tree.js'
 import Fire from './terrain/Fire.js'
 import Coal from './terrain/Coal.js'
-import Ashe from './terrain/Ashe.js'
+import Ashes from './terrain/Ashes.js'
 
 export default class Biome {
     constructor(context){
@@ -30,7 +30,7 @@ export default class Biome {
     }
 
     //From the existing environment, this function generates the next generation
-    //Upgrade grid for Biome
+    //Update grid for Biome
     next(){
         for(let row=0 ; row<ROWS ; row++){
             for(let col=0 ; col<COLS ; col++){
@@ -56,7 +56,7 @@ export default class Biome {
         }
     }
 
-    //Playground : generate land of water
+    //Playground : generate body of water
     generateSea(row, col){
         //clean sweep
         for(let row=0 ; row<ROWS ; row++){
@@ -66,7 +66,7 @@ export default class Biome {
         }
 
         let seaCoords = []
-        //generate 10 sources closed to the original source
+        //generate 10 sources close to the original source
         for(let i=0 ; i<10 ; i++){
             let radius = this.randomNumberBetween(5, 10)
             let shiftedRow = row + this.randomNumberBetween(-5, 5)
@@ -103,7 +103,7 @@ export default class Biome {
 
         let mountainCoords = []
         let icyTopsCoords = []
-        //generate 10 sources closed to the original source
+        //generate 10 sources close to the original source
         for(let i=0 ; i<10 ; i++){
             let radius = this.randomNumberBetween(5, 10)
             let shiftedRow = row + this.randomNumberBetween(-5, 5)
@@ -187,7 +187,7 @@ export default class Biome {
 
         let volcanoCoords = []
         let lavaCoords = []
-        //generate 10 sources closed to the original source
+        //generate 10 sources close to the original source
         for(let i=0 ; i<10 ; i++){
             let radius = this.randomNumberBetween(6, 12)
             let shiftedRow = row + this.randomNumberBetween(-5, 5)
@@ -219,6 +219,9 @@ export default class Biome {
                         shiftedRow += this.randomNumberBetween(-1,1)
                         shiftedCol--
                         break;
+
+                    default:
+                        console.log("Error : direction is not between 0 and 3")
                 }
                 if(shiftedRow>=0 && shiftedRow<ROWS && shiftedCol>=0 && shiftedCol<COLS){
                     lavaCoords.push([shiftedRow, shiftedCol])
